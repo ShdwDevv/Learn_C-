@@ -675,7 +675,7 @@ int main(){
 1 2 3 4 5 6
 Length : 6
 ```
-## Search an element in an Array
+## Search an element in an Array (Linear Search)
 ```cpp
 #include <iostream>
 using namespace std;
@@ -697,6 +697,129 @@ int main(){
         }
     }
     cout<<"Value Not found :(";
-    return 0;
+    return 0; 
+}   
+```
+## Sum of element in an Array
+```cpp
+#include <iostream>
+using namespace std;
+int main(){
+    int n;
+    cout<<"Enter the size of an array : ";
+    cin>>n;
+    int arr[n],sum;
+    for(int i = 0; i < n;i++){
+        cout<<"arr["<<i<<"]"<<" = ";
+        cin>>arr[i];
+        sum += arr[i];
+    }
+    cout<<"The Sum is : "<<sum;
 }
+```
+## Greatest Element in an Array
+```cpp
+#include <iostream>
+using namespace std;
+int main(){
+    int n;
+    cout<<"Enter the size of an array : ";
+    cin>>n;
+    int arr[n],sum;
+    for(int i = 0; i < n;i++){
+        cout<<"arr["<<i<<"]"<<" = ";
+        cin>>arr[i];
+    }
+    int maxVal = arr[0];
+    for(int i = 1;i < n;i++){
+        if(arr[i] > maxVal) maxVal = arr[i];
+    }
+    cout<<"The Greater Value is : "<<maxVal;
+}
+```
+## Sort an Element in an Array
+```cpp
+#include <iostream>
+using namespace std;
+int main(){
+    int n;
+    cout<<"Enter the size of an Array : ";
+    cin>>n;
+    int arr[n];
+    for(int i = 0; i < n;i++){
+        cout<<"arr["<<i<<"]"<<" = ";
+        cin>>arr[i];
+    }
+    for(int i = 0; i < n;i++){
+        for(int j = i+1;j < n;j++){
+            if(arr[i] > arr[j]){
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+    cout<<"The Sorted array are : "<<endl;
+    for(int val : arr){
+        cout<<val<<" ";
+    }
+}
+```
+## Functions
+```cpp
+#include <iostream>
+using namespace std;
+void greet(){
+    cout<<"Hello"<<endl;
+}
+int main(){
+    greet();
+    greet();
+    greet();
+    greet();
+    greet();
+    greet();
+}
+```
+## function Overloading
+```cpp
+#include <iostream>
+using namespace std;
+int add(int a,int b){
+    return a+b;
+}
+int add(int a,int b,int c){
+    return a+b+c;
+}
+float add(float a,float b){
+    return a+ b;
+}
+
+float add(float a,float b,float c){
+    return a+ b+c;
+}
+int main(){
+    cout<<add(2,3)<<endl;
+    cout<<add(2,3,4)<<endl;
+    cout<<add(2.3f,3.2f)<<endl;
+    cout<<add(2.4f,3.2f,4.3f)<<endl;
+}
+```
+## Default Argument Function
+```cpp
+#include<iostream>
+using namespace std;
+void display(string name = "Arshath",string city = "chennai",int age = 20){
+    cout<<name<<" is from "<<city<<" and his age is "<<age<<endl;
+}
+int main(){
+    display("sana","pakistan",22);
+    display();
+    display("Bakie");
+}
+```
+```
+sana is from pakistan and his age is 22
+Arshath is from chennai and his age is 20
+Bakie is from chennai and his age is 20
 ```
