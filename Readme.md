@@ -816,10 +816,529 @@ int main(){
     display("sana","pakistan",22);
     display();
     display("Bakie");
-}
+}   
 ```
 ```
 sana is from pakistan and his age is 22
 Arshath is from chennai and his age is 20
 Bakie is from chennai and his age is 20
+```
+
+## Templates in C++
+
+* A template is a simple yet very powerful tool in C++. The simple idea is to pass the data type as a parameter so that we don’t need to write the same code for different data types. For example, a software company may need to sort() for different data types. Rather than writing and maintaining multiple codes, we can write one sort() and pass the datatype as a parameter. 
+* C++ adds two new keywords to support templates: ‘template’ and ‘typename’. The second keyword can always be replaced by the keyword ‘class’.
+
+```cpp
+#include <iostream>
+using namespace std;
+template <class T>
+void swapping(T &a,T &b){
+    T temp = a;
+    a = b;
+    b = temp;
+}
+int main(){
+    int a = 10;
+    int b = 20;
+    cout<<"Before Swapping : A = "<<a<<" B = "<<b<<endl;
+    swapping(a,b);
+    cout<<"After Swapping : A = "<<a<<" B = "<<b<<endl;
+    char x = 'A',y = 'B';
+    cout<<"Before Swapping : X = "<<x<<" Y = "<<y<<endl;
+    swapping(x,y);
+    cout<<"After Swapping : X = "<<x<<" Y = "<<y<<endl;
+}
+```
+## Enum in C++
+* An enum is a special type that represents a group of constants (unchangeable values).
+* To create an enum, use the enum keyword, followed by the name of the enum, and separate the enum items with a comma:
+```cpp
+#include <iostream>
+using namespace std;
+enum gender {MALE,FEMALE};
+int main(){
+    gender g = MALE;
+    switch(g){
+        case MALE : cout<<"Male";break;
+        case FEMALE : cout <<"Female";break;
+        default : cout<<"Invalid";
+    }
+}
+```
+## Class in C++
+`!!! for every end of the class we need to put semicolon`
+```cpp
+#include <iostream>
+using namespace std;
+class Circle{
+    public:
+        float radius;
+    public:
+        float area(){
+            return (3.14 * radius * radius);
+        }
+        float circumference(){
+            return (2 * 3.14 * radius);
+        }
+};
+int main(){
+    Circle c;
+    c.radius = 12;
+    cout<<"Area : "<<c.area()<<endl;
+    cout<<"Circumference : "<<c.circumference()<<endl;
+}
+Area : 452.16
+Circumference : 75.36
+```
+## Access Specifier
+* In c++ there are 3 access specifier
+    * public
+    * private
+    * protected
+### public 
+* The public access specifier in C++ is a keyword that defines class members that can be accessed from anywhere in the program, including external code
+```cpp
+#include <iostream>
+using namespace std;
+class student{
+    public:
+    string name;
+    int age;
+    void display(){
+        cout<<"Hi "<<name<<", Your Age is "<<age;
+    }
+};
+int main(){
+    student s;
+    cout<<"Enter Name : ";
+    cin>>s.name;
+    cout<<"Enter Age : ";
+    cin>>s.age;
+    s.display();
+}
+Enter Name : Arshath 
+Enter Age : 32
+Hi Arshath, Your Age is 32
+```
+
+### private
+* In C++, the private access specifier limits the access to class members, making them only accessible within the class
+```cpp
+#include <iostream>
+using namespace std;
+class student{
+    private:
+    string name;
+    int age;
+    public:
+    void setData(string s,int n){
+        name = s;
+        age = n;
+    }
+    void display(){
+        cout<<"Hi "<<name<<", Your Age is "<<age;
+    }
+};
+int main(){
+    student s;
+    string name;
+    int age;
+    cout<<"Enter Name : ";
+    cin>>name;
+    cout<<"Enter Age : ";
+    cin>>age;
+    s.setData(name,age);
+    s.display();
+}
+```
+## Scope Resolution Operator
+* While defining the class's function outside the class , we use scope resolution operator
+* syntax : 
+1. declaration(inside class) : `returnType functionName();`
+1. defining(outside class) : `returnType className :: functionName(){}`
+```cpp
+#include <iostream>
+using namespace std;
+class student{
+    private:
+    string name;
+    int m1,m2,m3;
+    public:
+    void getData(){
+        cout<<"Enter Name : ";
+        cin>>name;
+        cout<<"Enter 3 marks : ";
+        cin>>m1>>m2>>m3;
+    }
+    void display();
+};
+void student :: display(){
+    int total = m1+m2+m3;
+    float avg = total / 3.0;
+    cout<<"Name : "<<name<<endl;
+    cout<<"Mark 1 : "<<m1<<endl;
+    cout<<"Mark 2 : "<<m2<<endl;
+    cout<<"Mark 3 : "<<m3<<endl;
+    cout<<"Total : "<<total<<endl;
+    cout<<"Average : "<<avg<<endl;
+}
+int main(){
+    student s;
+    s.getData();
+    s.display();
+}
+Enter Name : Arshath
+Enter 3 marks : 77 88 77
+Name : Arshath
+Mark 1 : 77
+Mark 2 : 88
+Mark 3 : 77
+Total : 242
+Average : 80.6667
+```
+
+## Constructor
+* Constructors are special function named after the class and without a return type, and are used to construct objects. Constructors, like function, can take input parameters. Constructors are used to initialize objects.
+* Constructors are different from function:
+    * Constructors must be named the same as the class name.
+    * Constructor is automatically called when object(instance of class) is created.
+    * Constructors do not have a return type
+* Types of constructor :
+    * Default constructor
+    * Parametrized constructor
+    * Copy constructor
+    * Constructor Overloading
+### Default Constructor
+```cpp
+#include <iostream>
+using namespace std;
+class student{
+    public:
+    student(){
+        cout<<"Object Created.."<<endl;
+    }
+};
+int main(){
+    student s1;
+    student s2;
+    student s3;
+    student s4;
+}
+Output : 
+Object Created..
+Object Created..
+Object Created..
+Object Created..
+```
+### Parametrized Constructor
+```cpp
+#include <iostream>
+using namespace std;
+class student{
+    private:
+    string name;
+    public:
+    student(string s){
+        name = s;
+    }
+    void display(){
+        cout<<"Hi "<<name;
+    }
+};
+int main(){
+    student s("Arshath");
+    s.display();
+}
+```
+### Copy constructor
+```cpp
+#include <iostream>
+using namespace std;
+class maths{
+    private:
+    int a,b;
+    public:
+    maths(int x,int y){
+        a = x;
+        b = y;
+    }
+    maths(maths &other){
+        a = other.a;
+        b = other.b;
+    }
+    void add(){
+        cout<<"Total : "<<a+b<<endl;
+    }
+};
+int main(){
+    maths o1(22,32);
+    maths o2(o1);
+    o1.add();
+    o2.add();
+}
+Total : 54
+Total : 54
+```
+## Constructor Overloading
+```cpp
+#include <iostream>
+using namespace std;
+class maths{
+    private:
+    int a,b;
+    public:
+    maths(){
+        a = 0;
+        b = 0;
+    }
+    maths(int x,int y){
+        a = x;
+        b = y;
+    }
+    maths(maths &other){
+        a = other.a;
+        b = other.b;
+    }
+    void add(){
+        cout<<"Total : "<<a+b<<endl;
+    }
+};
+int main(){
+    maths o1(22,32);
+    maths o2(o1);
+    maths o3;
+    o1.add();
+    o2.add();
+    o3.add();
+}
+Total : 54
+Total : 54
+Total : 0
+```
+## Destructor
+* Destructor is an instance member function which is invoked automatically
+whenever an object is going to destroy.
+Means, a destructor is the last function that is going to be called before an object is destroyed.
+```c++
+#include <iostream>
+using namespace std;
+class student{
+    public:
+    student(){
+        cout<<"Object Created"<<endl;
+    }
+    ~student(){
+        cout<<"Objected Destructed (Memory free)"<<endl;
+    }
+};
+int main(){
+    student s;
+    return 0;
+}
+Object Created
+Objected Destructed (Memory free)
+```
+## Inheritance
+![alt text](image.png)
+### Single Inheritance
+![alt text](image-1.png)
+* syntax : `class superClassName : accessSpecifier subClassName`
+```cpp
+#include <iostream>
+using namespace std;
+class Father{
+    public:
+    void house(){
+        cout<<"I have a House"<<endl;
+    }
+};
+class Son : public Father{
+    public:
+    void car(){
+        cout<<"I have a Car"<<endl;
+    }
+};
+int main(){
+    Son s;
+    s.house();
+    s.car();
+}
+```
+### Multiple Inheritance
+![alt text](image-2.png)
+```cpp
+#include <iostream>
+using namespace std;
+class Father{
+    public:
+    void fishing(){
+        cout<<"Learn Fishing"<<endl;
+    }
+};
+class Mother{
+    public:
+    void cooking(){
+        cout<<"Learn Cooking"<<endl;
+    }
+};
+class Son : public Father,public Mother{
+    public:
+    void coding(){
+        cout<<"Learn Coding"<<endl;
+    }
+};
+int main(){
+    Son s;
+    s.coding();
+    s.cooking();
+    s.fishing();
+}
+
+Learn Coding
+Learn Cooking
+Learn Fishing
+```
+* error: request for member 'a' is ambiguous
+### Multilevel Inheritance
+![alt text](image-3.png)
+```cpp
+#include <iostream>
+using namespace std;
+class GrandFather{
+    public:
+    void land(){
+        cout<<"I have a Land"<<endl;
+    }
+};
+class Father: public GrandFather{
+    public:
+    void house(){
+        cout<<"I have a House"<<endl;
+    }
+};
+class Son : public Father{
+    public:
+    void car(){
+        cout<<"I have a Car"<<endl;
+    }
+};
+int main(){
+    Son s;
+    s.land();
+    s.house();
+    s.car();
+}
+I have a Land
+I have a House
+I have a Car
+```
+## Hybrid Inheritance
+![alt text](image-4.png)
+```cpp
+#include <iostream>
+using namespace std;
+class GrandFather{
+    public:
+    void land(){
+        cout<<"I have a Land"<<endl;
+    }
+};
+class Father: public GrandFather{
+    public:
+    void house(){
+        cout<<"I have a House"<<endl;
+    }
+};
+class Mother{
+    public:
+    void gold(){
+        cout<<"I have a gold";
+    }
+};
+class Son : public Father,public Mother{
+    public:
+    void car(){
+        cout<<"I have a Car"<<endl;
+    }
+};
+int main(){
+    Son s;
+    s.land();
+    s.house();
+    s.car();
+    s.gold();
+}
+I have a Land
+I have a House
+I have a Car
+I have a gold
+```
+## Hierarchial Inheritance
+![alt text](image-5.png)
+```cpp
+#include <iostream>
+using namespace std;
+class Shape{
+    public:
+    float radius,length,breath,height;
+};
+class Triangle: public Shape{
+    public:
+    void getValue(){
+        cout<<"Enter Breath : ";
+        cin>>breath;
+        cout<<"Enter Height : ";
+        cin>>height;
+    }
+    void area(){
+        cout<<"Area of Triangle: "<<0.5 * breath * height<<endl;
+    }
+};
+class Square: public Shape{
+    public:
+    void getValue(){
+        cout<<"Enter Side : ";
+        cin>>length;
+    }
+    void area(){
+        cout<<"Area of Square : "<<length*length<<endl;
+    }
+};
+class Rectangle: public Shape{
+    public:
+    void getValue(){
+        cout<<"Enter Breath : ";
+        cin>>breath;
+        cout<<"Enter Length : ";
+        cin>>length;
+    }
+    void area(){
+        cout<<"Area of Rectangle : "<<length*breath<<endl;
+    }
+};
+class Circle: public Shape{
+    public:
+    void getValue(){
+        cout<<"Enter Radius : ";
+        cin>>radius;
+    }
+    void area(){
+        cout<<"Area of Circle : "<<3.14*radius*radius<<endl;
+    }
+};
+int main(){
+    Triangle t;
+    Rectangle r;
+    Square s;
+    Circle c;
+    t.getValue();
+    t.area();
+    r.getValue();
+    r.area();
+    s.getValue();
+    s.area();
+    c.getValue();
+    c.area();
+}
 ```
