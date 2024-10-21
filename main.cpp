@@ -1,12 +1,22 @@
 #include <iostream>
 using namespace std;
 int main(){
-    string s1 = "adb";
-    string s2 = "bad";
-    cout<<"String 1 : "<<s1<<endl;
-    cout<<"String 2 : "<<s2<<endl;
-    s1.swap(s2);
-    cout<<"After Swapping..."<<endl;
-    cout<<"String 1 : "<<s1<<endl;
-    cout<<"String 2 : "<<s2<<endl;
+    int n,val;
+    cout<<"Enter the size of the Array : ";
+    cin>>n;
+    int arr[n];
+    for(int i = 0;i < n;i++){
+        cout<<"arr["<<i<<"] = ";
+        cin>>arr[i];
+    }
+    cout<<"Enter the value to search : ";
+    cin>>val;
+    for(int i = 0; i < n;i++){
+        if(arr[i] == val){
+            cout<<"Value found at index "<<i;
+            return 0;
+        }
+    }
+    cout<<"Value Not found :(";
+    return 0;
 }
