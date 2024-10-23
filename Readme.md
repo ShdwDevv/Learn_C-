@@ -1140,9 +1140,9 @@ Object Created
 Objected Destructed (Memory free)
 ```
 ## Inheritance
-![alt text](image.png)
+![alt text](./images/image.png)
 ### Single Inheritance
-![alt text](image-1.png)
+![alt text](./images/image-1.png)
 * syntax : `class superClassName : accessSpecifier subClassName`
 ```cpp
 #include <iostream>
@@ -1166,7 +1166,7 @@ int main(){
 }
 ```
 ### Multiple Inheritance
-![alt text](image-2.png)
+![alt text](./images/image-2.png)
 ```cpp
 #include <iostream>
 using namespace std;
@@ -1201,7 +1201,7 @@ Learn Fishing
 ```
 * error: request for member 'a' is ambiguous
 ### Multilevel Inheritance
-![alt text](image-3.png)
+![alt text](./images/image-3.png)
 ```cpp
 #include <iostream>
 using namespace std;
@@ -1234,7 +1234,7 @@ I have a House
 I have a Car
 ```
 ## Hybrid Inheritance
-![alt text](image-4.png)
+![alt text](./images/image-4.png)
 ```cpp
 #include <iostream>
 using namespace std;
@@ -1275,7 +1275,7 @@ I have a Car
 I have a gold
 ```
 ## Hierarchial Inheritance
-![alt text](image-5.png)
+![alt text](./images/image-5.png)
 ```cpp
 #include <iostream>
 using namespace std;
@@ -1340,5 +1340,1172 @@ int main(){
     s.area();
     c.getValue();
     c.area();
+}
+```
+## Diamonnd problem in C++
+![alt text](./images/image-6.png)
+```cpp
+#include <iostream>
+using namespace std;
+class A{
+    public:
+    int age;
+};
+class B:public A{
+
+};
+class C:public A{
+
+};
+class D:public B,public C{
+
+};
+int main(){
+    D obj;
+    obj.age = 10;
+}
+// main.cpp:18:9: error: request for member 'age' is ambiguous
+// obj.age = 10;
+```
+* exapmle with constructor  (A is calling 2 times)
+```cpp
+#include <iostream>
+using namespace std;
+class A{
+    public:
+    A(){
+        cout<<"A's Constructor"<<endl;
+    }
+};
+class B:public A{
+    public:
+    B(){
+        cout<<"B's Constructor"<<endl;
+    }
+};
+class C:public A{
+    public:
+    C(){
+        cout<<"C's Constructor"<<endl;
+    }
+};
+class D:public B,public C{
+    public:
+    D(){
+        cout<<"D's Constructor"<<endl;
+    }
+};
+int main(){
+    D obj;
+}
+A's Constructor
+B's Constructor
+A's Constructor
+C's Constructor
+D's Constructor
+
+```
+
+* To solve this issue we use `virtual` keyword to inherit a class
+```cpp
+#include <iostream>
+using namespace std;
+class A{
+    public:
+    int age;
+};
+class B:virtual public A{
+
+};
+class C:virtual public A{
+
+};
+class D:public B,public C{
+
+};
+int main(){
+    D obj;
+    obj.age = 10;
+    cout<<obj.age<<endl;
+}
+```
+```cpp
+#include <iostream>
+using namespace std;
+class A{
+    public:
+    A(){
+        cout<<"A's Constructor"<<endl;
+    }
+};
+class B:virtual public A{
+    public:
+    B(){
+        cout<<"B's Constructor"<<endl;
+    }
+};
+class C:virtual public A{
+    public:
+    C(){
+        cout<<"C's Constructor"<<endl;
+    }
+};
+class D:public B,public C{
+    public:
+    D(){
+        cout<<"D's Constructor"<<endl;
+    }
+};
+int main(){
+    D obj;
+}
+A's Constructor
+B's Constructor
+C's Constructor
+D's Constructor
+```
+## Bank Management System using Class and Inheritance
+```cpp
+#include <iostream>
+using namespace std;
+class account{
+    private:
+    string name;
+    int accno;
+    string acctype;
+    public:
+    float balance = 0;
+    account(string t){
+        acctype = t;
+    }
+    void getAccountDetails(){
+        cout<<"Enter Name : ";
+        cin>>name;
+        cout<<"Enter Account Number : ";
+        cin>>accno;
+    }
+    void displayDetails(){
+        cout<<"Name : "<<name<<endl;
+        cout<<"Account Number : "<<accno<<endl;
+        cout<<"Account Type : "<<acctype<<endl; 
+    }
+    void showBalance(){
+        cout<<"Account number : "<<accno<<endl;
+        cout<<"Balance : "<<balance<<endl;
+    }
+};
+class savings : public account{
+    public:
+    savings(string type) : account(type){
+    }
+    void deposit(float depositMoney){
+        float interest;
+        balance += depositMoney;
+        interest = ((balance * 2) / 100) ;
+        balance += interest;
+        cout<<"Current Balance : "<<balance<<endl;
+    }
+    void withdraw(float withdrawMoney){
+        if(balance > 500 && balance > withdrawMoney){
+            balance=balance-withdrawMoney;
+            cout<<"Withdrawed : "<<withdrawMoney<<endl;
+            cout<<"Balance Amount After Withdraw: "<<balance<<endl;
+        }
+        else{
+            cout<<"Insufficient Balance"<<endl;
+        }
+    }
+};
+class current : public account{
+    public:
+    current(string type) : account(type){
+    }
+    void deposit(float depositMoney){
+        balance += depositMoney;
+        cout<<"Current Balance : "<<balance<<endl;
+    }
+    void withdraw(float withdrawMoney){
+        if(balance > 1000 && balance > withdrawMoney){
+            balance=balance-withdrawMoney;
+            cout<<"Withdrawed : "<<withdrawMoney<<endl;
+            cout<<"Balance Amount After Withdraw: "<<balance<<endl;
+        }
+        else{
+            cout<<"Insufficient Balance"<<endl;
+        }
+    }
+};
+int main(){
+    float depamt,withamt;
+    char type;
+    cout<<"Enter S for saving customer and C for current a/c customer : ";
+    cin>>type;
+    if(type == 'S' || type == 's'){
+        savings ac("Savings");
+        int choice;
+        ac.getAccountDetails();
+        while(1){
+            cout<<"\nChoose Your Choice\n1)   Deposit\n2)   Withdraw\n3)   Display Balance\n4)   Display with full Details\n5)   Exit"<<endl;
+            cout<<"Enter Your choice: ";
+            cin>>choice;
+            switch(choice){
+                case 1 :
+                cout<<"Enter a Money to Deposit : ";
+                cin>>depamt;
+                ac.deposit(depamt);
+                break;
+                case 2 :
+                cout<<"Enter a Money to Withdraw : ";
+                cin>>withamt;
+                ac.withdraw(withamt);
+                break;
+                case 3 :
+                ac.showBalance();break;
+                case 4 :
+                ac.displayDetails();break;
+                case 5 : 
+                goto end;
+                default:
+                cout<<"Invalid Option"<<endl;
+            }
+        }
+    }
+    else if(type == 'c' || type == 'C'){
+        current ac("Savings");
+        int choice;
+        ac.getAccountDetails();
+        while(1){
+            cout<<"Choose Your Choice\n1)   Deposit\n2)   Withdraw\n3)   Display Balance\n4)   Display with full Details\n5)   Exit"<<endl;
+            cout<<"Enter Your choice: ";
+            cin>>choice;
+            switch(choice){
+                case 1 :
+                cout<<"Enter a Money to Deposit : ";
+                cin>>depamt;
+                ac.deposit(depamt);
+                break;
+                case 2 :
+                cout<<"Enter a Money to Withdraw : ";
+                cin>>withamt;
+                ac.withdraw(withamt);
+                break;
+                case 3 :
+                ac.showBalance();break;
+                case 4 :
+                ac.displayDetails();break;
+                case 5 : 
+                goto end;
+                default:
+                cout<<"Invalid Option"<<endl;
+            }
+        }
+    }
+    else{
+        cout<<"Invalid Account Selection";
+    }
+    end:
+    cout<<"Thank you :)";
+    return 0;
+}
+```
+## Protected Access Specifier
+* We can't access the proivae variable in the inherited class , so here we use the proteced (we can access it in the same class and inherited class)
+```cpp
+#include <iostream>
+using namespace std;
+class A{
+    protected:
+    int x = 10;
+};
+class B : public A{
+    public:
+    void display(){
+        cout<<"X : "<<x<<endl;
+    }
+};
+int main(){
+    B b;
+    b.display();
+    b.x; // main.cpp:16:7: error: 'int A::x' is protected within this context
+}
+```
+
+## Function Overriding
+* Function overriding is a type of polymorphism in which we redefine the member function of a class which it inherited from its base class. 
+```cpp
+#include <iostream>
+using namespace std;
+class base{
+    protected:
+    int a,b;
+    public :
+    base(int x,int y){
+        a = x;
+        b = y;
+    }
+    void add(){
+        cout<<"Addition : "<<a+b;
+    }
+};
+class derived : public base{
+    private:
+    int c;
+    public :
+    derived(int x,int y,int z) : base(x,y){
+        c = z;
+    }
+    void add(){
+        cout<<"Addition : "<<a+b+c;
+    }
+};
+int main(){
+    derived d(10,20,30);
+    d.add();
+}
+```
+## Polymorphism
+![alt text](./images/image-7.png)
+## Operator Overloading
+![alt text](./images/image-8.png)
+```cpp
+#include <iostream>
+using namespace std;
+class Complex{
+    private:
+    int real,img;
+    public:
+    Complex(){
+        real = 0;
+        img = 0;
+    }
+    Complex(int r,int i){
+        real = r;
+        img = i;
+    }
+    void display(){
+        cout<<real<<"+"<<img<<"j"<<endl;
+    }
+    Complex  operator + (Complex other){
+        Complex temp ;
+        temp.real = real + other.real;
+        temp.img = img + other.img;
+        return temp;
+    }
+};
+int main(){
+    Complex c1(2,3);
+    Complex c2(4,5);
+    Complex c3;
+    c1.display();
+    c2.display();
+    c3.display();
+    c3 = c1 + c2;
+    c3.display();
+}
+2+3j
+4+5j
+0+0j
+6+8j
+```
+## Unary Operator Overloading
+```cpp
+#include <iostream>
+using namespace std;
+class Box{
+    private:
+    int x;
+    public:
+    Box(){
+        x = 0;
+    }
+    Box(int r){
+        x = r;
+    }
+    void display(){
+        cout<<"X : "<<x<<endl;
+    }
+    void  operator ++ (){ //pre increment
+        ++x;
+    }
+    void operator ++ (int){ // post increment
+        x++;
+    }
+};
+int main(){
+    Box b(10);
+    b.display();
+    // b++;//main.cpp:23:6: error: no 'operator++(int)' declared for postfix '++'
+    ++b;
+    b.display();
+    b++;
+    b.display();
+}
+X : 10
+X : 11
+X : 12
+```
+## Base class pointer , Derived class object
+* In your code, the use of a base class pointer (Base*) pointing to a derived class object demonstrates polymorphism in C++. Polymorphism allows objects of different derived classes to be treated uniformly as objects of the base class. The purpose of this is to achieve dynamic binding or runtime polymorphism, where the specific type of the object is determined at runtime, enabling flexible and reusable code. By using a base class pointer, you can point to any derived class object, promoting extensibility and abstraction.
+```cpp
+#include <iostream>
+using namespace std;
+class Base{
+    public:
+    void bname(){
+        cout<<"I am From Base Class"<<endl;
+    }
+};
+class Derived : public Base{
+    public:
+    void dname(){
+        cout<<"I am From Derived Class"<<endl;
+    }
+};
+int main(){
+    Base *b = NULL;
+    Derived d;
+    b = &d;
+    b->bname();
+}
+```
+## virtual Funtion
+* The base class pointer derived class object does not able to access the derived object's method , so to rectify that issue , we use `virtual function` (For overriding issue)
+```cpp
+#include <iostream>
+using namespace std;
+class Base{
+    public:
+    virtual void name(){
+        cout<<"I am From Base Class"<<endl;
+    }
+};
+class Derived : public Base{
+    public:
+    void name(){
+        cout<<"I am From Derived Class"<<endl;
+    }
+};
+int main(){
+    Base *b = NULL;
+    Derived d;
+    b = &d;
+    b->name(); // I am From Derived Class
+}
+```
+* Another Example
+```cpp
+#include <iostream>
+using namespace std;
+class vaccine{
+    public:
+    virtual void name(){
+        cout<<"Putting Vaccine"<<endl;
+    }
+};
+class covaccine : public vaccine{
+    public:
+    void name(){
+        cout<<"Putting CoVaccine"<<endl;
+    }
+};
+class covishield : public vaccine{
+    public:
+    void name(){
+        cout<<"Putting CoviShield"<<endl;
+    }
+};
+int main(){
+    covaccine cx;
+    covishield cs;
+    vaccine *v = &cx;
+    v->name(); // Putting CoVaccine
+    v = &cs;
+    v->name(); // Putting CoviShield
+}
+```
+## Pure Virtual Function
+* The method is declared in base class , and it should be defined in the derived class
+* A pure virtual function is a virtual function that has no definition and must be overridden in a derived class .
+```cpp
+#include <iostream>
+using namespace std;
+class Base{
+    public:
+    virtual void run() = 0;
+};
+class Derived : public Base{
+    public:
+    void run(){
+        cout<<"Running by derived";
+    }
+};
+int main(){
+    Base *b = new Derived();
+    b->run(); // Running by derived
+}
+```
+* Abstract class - If a class contains atleast one Pure Virtual Function the we call it as `Abstract Class`
+
+## Abstraction
+* Data abstraction is one of the most essential and important features of object-oriented programming in C++. Abstraction means displaying only essential information and ignoring the details.
+```cpp
+#include <iostream>
+using namespace std;
+class BANK{
+    public:
+    virtual void deposit() = 0;
+    virtual void credit() = 0;
+    virtual void loan() = 0;
+};
+class HDFC : public BANK{
+    public:
+    void deposit(){
+        cout<<"HDFC Deposit"<<endl;
+    }
+    void credit(){
+        cout<<"HDFC Credit"<<endl;
+    }
+    void loan(){
+        cout<<"HDFC Loan : 15%"<<endl;
+    }
+};
+class IOB : public BANK{
+    public:
+    void deposit(){
+        cout<<"IOD Deposit"<<endl;
+    }
+    void credit(){
+        cout<<"IOD Credit"<<endl;
+    }
+    void loan(){
+        cout<<"IOD Loan : 5%"<<endl;
+    }
+};
+int main(){
+    BANK *b = new HDFC();
+    b->credit(); // HDFC Credit
+    b = new IOB();
+    b->deposit(); // IOD Deposit
+}
+```
+## Getters and Setters
+```cpp
+#include <iostream>
+using namespace std;
+class Student{
+    private:
+    string name;
+    int age;
+    public:
+    Student(string name,int age){
+        this->name = name;
+        this->age = age;
+    }
+    void setName(string name){
+        this->name = name;
+    }
+    string getName(){
+        return this->name;
+    }
+    void setAge(int age){
+        this->age = age;
+    }
+    int getAge(){
+        return this->age;
+    }
+    void print(){
+        cout<<"Name : "<<this->name<<"\nAge : "<<this->age<<endl;
+    }
+};
+int main(){
+    Student s("arshath",32);
+    s.print();
+    s.setName("arss");
+    s.print();
+    s.setAge(90);
+    cout<<s.getName()<<" "<<s.getAge()<<endl;
+}
+```
+## Static variable 
+```cpp
+#include <iostream>
+using namespace std;
+class Student{
+    public:
+    // static int count = 0; // error: ISO C++ forbids in-class initialization of non-const static member 'Student::count'
+    static int count;
+    string name;
+    Student(string name){
+        this->name = name;
+        ++count;
+    }
+    static int getCount(){
+        return count;
+    }
+};
+int Student :: count = 0;
+int main(){
+    Student("A");
+    Student("A");
+    Student("A");
+    cout<<Student::count<<endl; // 3
+    cout<<Student::getCount()<<endl; // 3
+}
+```
+## Friend Function
+https://www.javatpoint.com/cpp-friend-function
+```cpp
+#include <iostream>
+using namespace std;
+class A{
+    private:
+        int a,b;
+    public:
+    friend void setData();
+};
+void setData(){
+    A o;
+    o.a = 10;
+    o.b = 10;
+    cout<<"A : "<<o.a<<"\nB : "<<o.b<<endl;
+}
+int main(){
+    setData();
+}
+A : 10
+B : 10
+```
+## Friend Class
+```cpp
+#include <iostream>
+using namespace std;
+class  B;
+class A{
+    private:
+    int a = 90;
+    friend B;
+};
+class B{
+    public:
+    A o;
+    void display(){
+        cout<<o.a<<endl;
+    }
+};
+int main(){
+    B o;
+    o.display();
+}
+```
+## Change Private Values Using Friend Class
+```cpp
+#include <iostream>
+using namespace std;
+class A{
+    private:
+    int x = 0;
+    public:
+    void display(){
+        cout<<"X : "<<x<<endl;
+    }
+    friend void setData(A &o,int val);
+};
+void setData(A &o,int val){
+    o.x = val;
+}
+int main(){
+    A o;
+    o.display();// X : 0
+    setData(o,98);
+    o.display();// X : 98
+}
+```
+## Single Value Member Initializer List
+```cpp
+#include<iostream>
+using namespace std;
+class A{
+    private:
+    int x;
+    public:
+    A(int a):x(a){}
+    void display(){
+        cout<<"A : "<<x<<endl;
+    }
+};
+int main(){
+    A o(9);
+    o.display();
+}
+```
+## Multiple Value Member Initializer List
+```cpp
+#include<iostream>
+using namespace std;
+class A{
+    private:
+    int x,y;
+    public:
+    A(int a,int b):x(a),y(b){}
+    void display(){
+        cout<<"A : "<<x<<endl;
+        cout<<"B : "<<y<<endl;
+    }
+};
+int main(){
+    A o(9,10);
+    o.display();
+}
+```
+## Add value to Base Class Constructor Using Member Initializer List
+```cpp
+#include<iostream>
+using namespace std;
+class A{
+    private:
+    int a;
+    public:
+    A(int x):a(x){
+        cout<<"A : "<<a<<endl;
+    } 
+};
+class B: public A{
+    private:
+    int b;
+    public:
+    B(int x,int y):A(x),b(y){
+        cout<<"B : "<<b<<endl;
+    }
+};
+int main(){
+    B o(10,20);
+}
+```
+## Initialized Const variable using Member Initializer List
+* In constructor , we cant assing value to the const variable
+```cpp
+#include<iostream>
+using namespace std;
+class A{
+    private:
+    const int a;
+    public:
+    A(int x):a(x){
+        // a = x; // error: assignment of read-only member 'A::a'
+        cout<<"A : "<<a<<endl;
+    } 
+};
+int main(){
+    A o(10);
+}
+```
+## Constructor’s parameter name is same as data member using Member Initializer List
+```cpp
+#include<iostream>
+using namespace std;
+class Student{
+    private:
+    string name;
+    int age;
+    public:
+    Student(string name,int age):name(name),age(age){
+        cout<<"Name : "<<name<<endl;
+        cout<<"Age : "<<age<<endl;
+    } 
+};
+int main(){
+    Student o("Arshth",12);
+}
+```
+## Narrowing conversion Problem in Member Initializer
+* While initializing large size datatype value to the smaller size data type , there is a narrow problem occur , so use {} to display warning 
+```cpp
+#include<iostream>
+using namespace std;
+class A{
+    private:
+    char a;
+    public:
+    A(int x):a{x}{ //  warning: narrowing conversion of 'x' from 'int' to 'char' inside { } [-Wnarrowing] A(int x):a{x}{
+        cout<<"A : "<<(int)a<<endl; // A : 77
+    }
+};
+int main(){
+    A o(333);
+}
+```
+## Inline Function
+* We use when we have small function definition , it will icrease the speed 
+```cpp
+#include<iostream>
+using namespace std;
+inline int cube(int a){
+    return a*a*a;
+}
+int main(){
+    cout<<"Cube : "<<cube(3)<<endl;
+}
+```
+## Lambda Expression / Function
+```cpp
+#include <iostream>
+using namespace std;
+int main(){
+    auto sum = [](int a,int b){return a+b;};
+    cout<<"Sum : "<<sum(4,5)<<endl;
+}
+```
+## Preprocessor Directive
+```cpp
+#include<iostream>
+#define PI 3.14
+#define rectangle(l,b) {l * b}
+#define createString(s) #s
+#define concat(a,b) a ## b
+using namespace std;
+int main(){
+    cout<<"Circle : "<<PI*3*3<<endl;
+    int area = rectangle(3,4);
+    cout<<"Rectangle : "<<area<<endl;
+    cout<<"New String : "<<createString(Arshath)<<endl;
+    int ab = 100;
+    cout<<"AB : "<<concat(a,b)<<endl;
+    cout<<"__LINE__ : "<<__LINE__<<endl;
+    cout<<"__FILE__ : "<<__FILE__<<endl;
+    cout<<"__DATE__ : "<<__DATE__<<endl;
+    cout<<"__TIME__ : "<<__TIME__<<endl;
+    cout<<"__cplusplus__ : "<<__cplusplus<<endl;
+}
+Circle : 28.26
+Rectangle : 12
+New String : Arshath
+AB : 100
+__LINE__14
+__FILE__main.cpp
+__DATE__Oct 22 2024
+__TIME__23:52:22
+__cplusplus__201402
+
+D:\cache\fsbkbfsfksahfjsf\New\C++\Learn>g++ main.cpp
+
+D:\cache\fsbkbfsfksahfjsf\New\C++\Learn>a.exe
+Circle : 28.26
+Rectangle : 12
+New String : Arshath
+AB : 100
+__LINE__ : 14
+__FILE__ : main.cpp
+__DATE__ : Oct 22 2024
+__TIME__ : 23:52:36
+__cplusplus__ : 201402
+```
+## Character Classification Functions
+```cpp
+#include<iostream>
+#include<cctype>
+using namespace std;
+int main(){
+    char a[6] = "R@ 1a";
+    for(int i = 0; i < 5;i++){
+        if(isupper(a[i])) cout<<"a["<<i<<"] is Upper"<<endl;
+        if(islower(a[i])) cout<<"a["<<i<<"] is Lower"<<endl;
+        if(isspace(a[i])) cout<<"a["<<i<<"] is Space"<<endl;
+        if(isalnum(a[i])) cout<<"a["<<i<<"] is Alpha numeric"<<endl;
+        if(isalpha(a[i])) cout<<"a["<<i<<"] is Alphabet"<<endl;
+    }
+}
+a[0] is Upper
+a[0] is Alpha numeric
+a[0] is Alphabet
+a[2] is Space
+a[3] is Alpha numeric
+a[4] is Lower
+a[4] is Alpha numeric
+a[4] is Alphabet
+```
+## rand() in cpp
+```cpp
+#include <iostream>
+using namespace std;
+void random(){
+    int random;
+    for(int i = 0; i < 10;i++){
+        random = rand() % 10;
+        cout<<random<<endl;
+    }
+}
+int main(){
+    random();
+}
+```
+## Exception handling in C++
+```cpp
+#include <iostream>
+using namespace std;
+int main(){
+    int a = 10,b = 0;
+    int c = 0;
+    try{
+        if(b == 0) throw string("Hi");
+        c = a / b;
+        cout<<"Result : "<<c<<endl;
+    }
+    catch(int e){
+        cout<<"Error of Integer"<<endl;
+    }   
+    catch(char e){
+        cout<<"Error of Character"<<endl;
+    }
+    catch(float e){
+        cout<<"Error of Float"<<endl;
+    }
+    catch(...){
+        cout<<"Error of String"<<endl;
+    }
+}
+```
+## Writing a File in C++
+```cpp
+#include <iostream>
+#include <fstream>
+using namespace std;
+int main(){
+    // app - appennd 
+    // trunc = truncate (erase everything an write in new)
+    // ofstream - output file stream
+    ofstream o("test.txt",ios::trunc);
+    o<<"Arhath Ahamed"<<endl;
+    o.close();
+}
+```
+## Read a File in C++
+```cpp
+#include <iostream>
+#include <fstream>
+using namespace std;
+int main(){
+    string text;
+    ifstream getFile("test.txt");
+    while(getline(getFile,text)){
+        cout<<text<<endl;
+    }
+    getFile.close();
+    return 0;
+}
+```
+## Standard Template Libraries (STL)
+### Arrays
+```cpp
+#include <iostream>
+#include <array>
+using namespace std;
+int main(){
+    array <int,5> a = {10,20,30,40,50};
+    array <int,5> b = {100,200,300,400,500};
+    cout<<"Array size : "<<a.size()<<endl;
+    cout<<"A : ";
+    for(int x : a) cout<<x<<" ";
+    cout<<endl;
+    cout<<"Array element at 3rd index : "<<a.at(3)<<endl;
+    cout<<"Front Element : "<<a.front()<<endl;
+    cout<<"Back Element : "<<a.back()<<endl;
+    cout<<"Before Swap : "<<endl;
+    cout<<"A : ";
+    for(int x : a) cout<<x<<" ";
+    cout<<endl;
+    cout<<"B : ";
+    for(int x : b) cout<<x<<" ";
+    cout<<endl;
+    a.swap(b);
+    cout<<"After Swap : "<<endl;
+    cout<<"A : ";
+    for(int x : a) cout<<x<<" ";
+    cout<<endl;
+    cout<<"B : ";
+    for(int x : b) cout<<x<<" ";
+    cout<<endl;
+    a.fill(-1);
+    cout<<"Fill : ";
+    for(int x : a) cout<<x<<" ";
+}
+Array size : 5
+A : 10 20 30 40 50
+Array element at 3rd index : 40
+Front Element : 10
+Back Element : 50
+Before Swap :
+A : 10 20 30 40 50
+B : 100 200 300 400 500
+After Swap :
+A : 100 200 300 400 500
+B : 10 20 30 40 50
+Fill : -1 -1 -1 -1 -1
+```
+### Vector
+```cpp
+#include<iostream>
+#include<vector>
+using namespace std;
+int main(){
+    vector<int> a;
+    cout<<"Capacity : "<<a.capacity()<<endl;// 0
+    a.push_back(2);
+    cout<<"Capacity : "<<a.capacity()<<endl;// 1
+    a.push_back(44);
+    cout<<"Capacity : "<<a.capacity()<<endl;// 2
+    a.push_back(88);
+    cout<<"Capacity : "<<a.capacity()<<endl;// 4
+    cout<<"Size : "<<a.size()<<endl;
+    cout<<"Vector element at 3rd index : "<<a.at(2)<<endl;
+    cout<<"Vector Front Element : "<<a.front()<<endl;
+    cout<<"Vector Back Element : "<<a.back()<<endl;
+    cout<<"Before Pop "<<endl;
+    cout<<"A : ";
+    for(int x : a) cout<<x<<" ";
+    cout<<endl;
+    a.pop_back();
+    cout<<"After Pop "<<endl;
+    cout<<"A : ";
+    for(int x : a) cout<<x<<" ";
+    cout<<endl;
+    a.clear();
+    cout<<"After Clear"<<endl;
+    cout<<"Size : "<<a.size()<<endl;
+    cout<<"Capacity : "<<a.capacity()<<endl;
+    vector<int> b(5,10);
+    cout<<"B : ";
+    for(int x : b) cout<<x<<" ";
+    cout<<endl;
+    cout<<"copying one element from one vector to another"<<endl;
+    vector<int> c(b);
+    cout<<"C : ";
+    for(int x : c) cout<<x<<" ";
+    cout<<endl;
+    for(auto i = c.begin();i != c.end();i++){
+        cout<<*i<<" ";
+    }
+    cout<<endl;
+    vector<int> e = {1,2};
+    vector<int> f = {3,4};
+    e.swap(f);
+    for(auto i = e.begin();i != e.end();i++){
+        cout<<*i<<" ";
+    }
+    cout<<endl;
+    for(auto i = f.begin();i != f.end();i++){
+        cout<<*i<<" ";
+    }
+    cout<<endl;
+}
+```
+### Deque
+```cpp
+#include <iostream>
+#include <deque>
+using namespace std;
+int main(){
+    deque<int> d = {23};
+    d.push_back(3);
+    d.push_front(33);
+    for(auto i = d.begin();i != d.end();i++){
+        cout<<*i<<" ";
+    }
+    cout<<endl;
+    cout<<"Empty : "<<d.empty()<<endl;
+    cout<<"Size : "<<d.size()<<endl;
+    cout<<"Access : "<<d.at(2)<<endl;
+    cout<<"Deque Front Element : "<<d.front()<<endl;
+    cout<<"Deque Back Element : "<<d.back()<<endl;
+    d.pop_back();
+    d.pop_front();
+    for(auto i = d.begin();i != d.end();i++){
+        cout<<*i<<" ";
+    }
+    cout<<endl;
+}
+```
+### list
+```cpp
+#include<iostream>
+#include<list>
+using namespace std;
+void print(list<int> l){
+    for(int n : l){
+        cout<<n<<" ";
+    }
+    cout<<endl;
+}
+int main(){
+    list<int> l = {1,23,42,53,32};
+    print(l);
+    l.reverse();
+    cout<<"Reverse : ";
+    print(l);
+    cout<<"Sort : ";
+    l.sort();
+    print(l);
+    cout<<"List Front Element : "<<l.front()<<endl;
+    cout<<"List Back Element : "<<l.back()<<endl;
+    l.pop_front();
+    l.pop_back();
+    l.push_back(332);
+    l.push_front(2);
+    print(l);
+}
+1 23 42 53 32 
+Reverse : 32 53 42 23 1
+Sort : 1 23 32 42 53
+List Front Element : 1
+List Back Element : 53
+2 23 32 42 332
+```
+### stack
+````cpp
+#include <iostream>
+#include <stack>
+using namespace std;
+
+void print(stack<int> st){
+    while (!st.empty())
+    {
+        cout<<st.top()<<" ";
+        st.pop();
+    }
+    cout<<endl;
+}
+int main(){
+    stack<int> st;
+    st.push(2);
+    st.push(92);
+    st.push(9);
+    st.push(42);
+    st.push(53);
+    print(st);
+}
+```
+### queue
+```cpp
+#include <iostream>
+#include <queue>
+using namespace std;
+
+void print(queue<int> qu){
+    while (!qu.empty())
+    {
+        cout<<qu.front()<<" ";
+        qu.pop();
+    }
+    cout<<endl;
+}
+int main(){
+    queue<int> qu;
+    qu.push(2);
+    qu.push(92);
+    qu.push(9);
+    qu.push(42);
+    qu.push(53);
+    print(qu);
+    cout<<"First Element : "<<qu.front()<<endl;
+    cout<<"Last Element : "<<qu.back()<<endl;
 }
 ```
